@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from fastapi_cache.decorator import cache
 
-from app.service.crawler_service import LibraryCrawlerService
+from ..service.crawler_service import LibraryCrawlerService
 
 router = APIRouter()
 
