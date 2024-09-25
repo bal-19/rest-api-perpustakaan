@@ -5,12 +5,14 @@ class Library(BaseModel):
     nama: str
     alamat: str
     kode_pos: str
-    telepon: str
     jenis: str
-    sub_jenis: str
+    subjenis: str
     lembaga_induk: str
     status_perpustakaan: str
     provinsi: str
     kota: str
     kecamatan: str
     kelurahan: str
+    email: str
+    telepon: str
+    website: str

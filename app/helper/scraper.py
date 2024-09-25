@@ -5,6 +5,8 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from typing import List
 
+from ..model.library import Library
+
 class WebScraper:
     def __init__(self) -> None:
         self.cookies = {
@@ -36,10 +38,10 @@ class WebScraper:
         current_timestamp = int(datetime.now().timestamp())
         params = {
             'jenis': kwargs.get('jenis', ''),
-            'provinsi_id': kwargs.get('provinsi_id', ''),
-            'kabkota_id': kwargs.get('kabkota_id', ''),
-            'kecamatan_id': kwargs.get('kecamatan_id', ''),
-            'kelurahan_id': kwargs.get('kelurahan_id', ''),
+            'provinsi_id': str(kwargs.get('provinsi_id', '')),
+            'kabkota_id': str(kwargs.get('kabkota_id', '')),
+            'kecamatan_id': str(kwargs.get('kecamatan_id', '')),
+            'kelurahan_id': str(kwargs.get('kelurahan_id', '')),
             'subjenis': '',
             'draw': '0',
             'columns[0][data]': 'id',
@@ -85,7 +87,7 @@ class WebScraper:
             'columns[6][search][value]': '',
             'columns[6][search][regex]': 'false',
             'start': '0',
-            'length': '50',
+            'length': str(kwargs.get('length', '50')),
             'search[value]': '',
             'search[regex]': 'false',
             '_': str(current_timestamp),
@@ -106,5 +108,25 @@ class WebScraper:
         library_data = []
 
         # scraping logic
+        total_data = response.get("recordsTotal")
+        for library in response.get("data"):
+            npp = library.get("npp")
+            nama = library.get("nama")
+            lembaga_induk = library.get("lembaga_induk")
+            alamat = library.get("alamat")
+            kode_pos = library.get("kode_pos")
+            telepon = library.get("telepon")
+            email = library.get("email")
+            website = library.get("website")
+            jenis = library.get("jenis")
+            sub_jenis = library.get("subjenis")
+            status_perpus = library.get("status_perpus")
+            provinsi = library.get("nama_provinsi")
+            kabkota = library.get("nama_kabkota")
+            kecamatan = library.get('nama_kecamatan')
+            kelurahan = library.get("nama_kelurahan")
+            
+            data = Library()
+            library_data.append(data)
 
         return library_data
