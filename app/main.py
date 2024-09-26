@@ -1,13 +1,14 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
 
-from app.controller.library_controller import router as library_router
+from controller.library_controller import router as library_router
 
 app = FastAPI()
 
 # Include the library route
-app.include_router(library_router, prefix="/api/v1/perpustakaan")
+app.include_router(library_router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():
@@ -16,3 +17,7 @@ def read_root():
 @app.on_event("startup")
 async def startup():
     FastAPICache.init(InMemoryBackend(), prefix="fastapi-cache")
+    
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=1919, reload=True)
