@@ -2,10 +2,8 @@ import requests
 
 from fastapi import HTTPException
 from datetime import datetime
-from bs4 import BeautifulSoup
 from typing import List
 
-from ..model.library import Library
 
 class WebScraper:
     def __init__(self) -> None:
@@ -34,10 +32,49 @@ class WebScraper:
             'x-requested-with': 'XMLHttpRequest',
         }
     
+    def mapping(self, data: dict) -> dict:
+        # mapping
+        npp = data.get("npp")
+        nama = data.get("nama")
+        lembaga_induk = data.get("lembaga_induk")
+        alamat = data.get("alamat")
+        telepon = data.get("telepon")
+        email = data.get("email")
+        website = data.get("website")
+        jenis = data.get("jenis")
+        sub_jenis = data.get("subjenis")
+        status_perpus = data.get("status_perpus")
+        kode_pos = data.get("kode_pos")
+        provinsi = data.get("nama_provinsi")
+        kabkota = data.get("nama_kabkota")
+        kecamatan = data.get('nama_kecamatan')
+        kelurahan = data.get("nama_kelurahan")
+
+        # saving to variable
+        raw_data = dict(
+            npp=npp,
+            nama=nama,
+            lembaga=lembaga_induk,
+            alamat=alamat,
+            telepon=telepon,
+            email=email,
+            website=website,
+            jenis=jenis,
+            subjenis=sub_jenis,
+            status_perpustakaan=status_perpus,
+            kode_pos=kode_pos,
+            provinsi=provinsi,
+            kabkota=kabkota,
+            kecamatan=kecamatan,
+            kelurahan=kelurahan
+        )
+        
+        return raw_data
+        
     def scrape_libraries(self, url: str, **kwargs) -> List[dict]:
         current_timestamp = int(datetime.now().timestamp())
         params = {
-            'jenis': kwargs.get('jenis', ''),
+            'jenis': str(kwargs.get('jenis', '')).upper(),
             'provinsi_id': str(kwargs.get('provinsi_id', '')),
             'kabkota_id': str(kwargs.get('kabkota_id', '')),
             'kecamatan_id': str(kwargs.get('kecamatan_id', '')),
@@ -87,7 +124,7 @@ class WebScraper:
             'columns[6][search][value]': '',
             'columns[6][search][regex]': 'false',
             'start': '0',
-            'length': str(kwargs.get('length', '50')),
+            'length': str(kwargs.get('length', '10')),
             'search[value]': '',
             'search[regex]': 'false',
             '_': str(current_timestamp),
@@ -105,28 +142,13 @@ class WebScraper:
         elif response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail="An error occurred")
         
-        library_data = []
+        result = response.json()
+        total_data = result.get("recordsTotal")
+        library_data = dict(total=total_data, data=list())
 
         # scraping logic
-        total_data = response.get("recordsTotal")
-        for library in response.get("data"):
-            npp = library.get("npp")
-            nama = library.get("nama")
-            lembaga_induk = library.get("lembaga_induk")
-            alamat = library.get("alamat")
-            kode_pos = library.get("kode_pos")
-            telepon = library.get("telepon")
-            email = library.get("email")
-            website = library.get("website")
-            jenis = library.get("jenis")
-            sub_jenis = library.get("subjenis")
-            status_perpus = library.get("status_perpus")
-            provinsi = library.get("nama_provinsi")
-            kabkota = library.get("nama_kabkota")
-            kecamatan = library.get('nama_kecamatan')
-            kelurahan = library.get("nama_kelurahan")
-            
-            data = Library()
-            library_data.append(data)
+        for library in result.get("data"):
+            data = self.mapping(library)
+            library_data.get("data").append(data)
 
         return library_data
