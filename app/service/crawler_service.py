@@ -26,3 +26,13 @@ class LibraryCrawlerService:
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Internal server error {e}")
         
+    def fetch_type_data(self) -> List:
+        url = "https://data.perpusnas.go.id/reference/list-dropdown/jenis-perpustakaan"
+        
+        try:
+            # fetch data
+            types = self.scraper.scrape_type(url)
+            return types
+            
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Internal server error {e}")
