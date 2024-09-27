@@ -8,10 +8,10 @@ from controller.library_controller import router as library_router
 app = FastAPI()
 
 # Include the library route
-app.include_router(library_router, prefix="/api/v1")
+app.include_router(library_router, prefix="/api/v1/perpustakaan")
 
 @app.get("/")
-def read_root():
+async def read_root():
     return {"message": "Welcome to the Perpustakaan Crawler API!"}
 
 @app.on_event("startup")
