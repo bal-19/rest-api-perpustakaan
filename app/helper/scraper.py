@@ -1,5 +1,6 @@
 import requests
 
+from bs4 import BeautifulSoup
 from fastapi import HTTPException
 from datetime import datetime
 from typing import List
@@ -153,3 +154,25 @@ class WebScraper:
             library_data.get("data").append(data.__dict__)
 
         return library_data
+
+    def scrape_type(self, url: str) -> List:
+        response = requests.get(url, headers=self.headers)
+        
+        # Handle if status code != 200
+        if response.status_code == 404:
+            raise HTTPException(status_code=404, detail="Page not found")
+        elif response.status_code == 403:
+            raise HTTPException(status_code=403, detail="Access forbidden")
+        elif response.status_code >= 500:
+            raise HTTPException(status_code=500, detail="Server error")
+        elif response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail="An error occurred")
+        
+        soup = BeautifulSoup(response.text, "html.parser")
+        type_list = list()
+        
+        for option in soup.select("option"):
+            type_value = option.get("value")
+            type_list.append(type_value)
+        
+        return type_list
