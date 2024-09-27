@@ -6,7 +6,7 @@ from service.crawler_service import LibraryCrawlerService
 router = APIRouter()
 
 @router.get("/perpustakaan")
-@cache(expire=3600)  # Cache this endpoint for 1 hour
+@cache(expire=1800)  # Cache this endpoint for 1 hour
 def get_libraries(
     jenis: str = Query('', description="Jenis perpustakaan (opsional)"),
     provinsi_id: str = Query('', description="ID provinsi (opsional)"),
