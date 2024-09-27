@@ -5,9 +5,9 @@ from service.crawler_service import LibraryCrawlerService
 
 router = APIRouter()
 
-@router.get("/perpustakaan")
-@cache(expire=1800)  # Cache this endpoint for 1 hour
-def get_libraries(
+@router.get("/data")
+@cache(expire=1800)  # Cache this endpoint for 30 minute
+async def get_libraries(
     jenis: str = Query('', description="Jenis perpustakaan (opsional)"),
     provinsi_id: str = Query('', description="ID provinsi (opsional)"),
     kabkota_id: str = Query('', description="ID kabupaten/kota (opsional)"),
@@ -42,4 +42,25 @@ def get_libraries(
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal server error {e}")
-    
+
+@router.get("/jenis")
+@cache(expire=900) # cache for 15 minute
+async def get_type():
+    try:
+        service = LibraryCrawlerService()
+        types = service.fetch_type_data()
+        
+        if types:
+            return {
+                'status': 'success',
+                'types': types
+            }
+
+        else:
+            return {
+                'status': 'success',
+                'types': []
+            }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal server error {e}")
