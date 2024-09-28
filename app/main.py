@@ -5,7 +5,7 @@ from fastapi_cache.backends.inmemory import InMemoryBackend
 
 from controller.library_controller import router as library_router
 
-app = FastAPI()
+app = FastAPI(title="Perpustakaan Service")
 
 # Include the library route
 app.include_router(library_router, prefix="/api/v1/perpustakaan")
