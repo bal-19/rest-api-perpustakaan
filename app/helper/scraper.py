@@ -135,44 +135,70 @@ class WebScraper:
         response = requests.get(url, params=params, cookies=self.cookies, headers=self.headers)
         
         # Handle if status code != 200
-        if response.status_code == 404:
-            raise HTTPException(status_code=404, detail="Page not found")
-        elif response.status_code == 403:
-            raise HTTPException(status_code=403, detail="Access forbidden")
-        elif response.status_code >= 500:
-            raise HTTPException(status_code=500, detail="Server error")
-        elif response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail="An error occurred")
+        if response.status_code == 200:
+            result = response.json()
+            total_data = result.get("recordsTotal")
+            library_data = dict(total=total_data, data=list())
+
+            datas = result.get("data")
+            
+            # scraping logic
+            for library in datas:
+                data = self.mapping(library)
+                library_data.get("data").append(data.__dict__)
+            return library_data
+            
+        else:
+            raise HTTPException(status_code=response.status_code, detail=response.reason)
         
-        result = response.json()
-        total_data = result.get("recordsTotal")
-        library_data = dict(total=total_data, data=list())
-
-        # scraping logic
-        for library in result.get("data"):
-            data = self.mapping(library)
-            library_data.get("data").append(data.__dict__)
-
-        return library_data
 
     def scrape_type(self, url: str) -> List:
         response = requests.get(url, headers=self.headers)
         
         # Handle if status code != 200
-        if response.status_code == 404:
-            raise HTTPException(status_code=404, detail="Page not found")
-        elif response.status_code == 403:
-            raise HTTPException(status_code=403, detail="Access forbidden")
-        elif response.status_code >= 500:
-            raise HTTPException(status_code=500, detail="Server error")
-        elif response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail="An error occurred")
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, "html.parser")
+            type_list = list()
+            
+            options = soup.select("option")
+            
+            if options:
+                for option in options:
+                    type_value = option.get("value")
+                    type_list.append(type_value)
+                return type_list
+            
+            else:
+                raise HTTPException(status_code=404, detail="Not Found")
+        else:
+            raise HTTPException(status_code=response.status_code, detail=response.reason)
+    
+    def scrape_subtype(self, url: str) -> List:
+        response = requests.get(url, headers=self.headers)
         
-        soup = BeautifulSoup(response.text, "html.parser")
-        type_list = list()
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, "html.parser")
+            subtype_list = list()
+            
+            options = soup.select("option")
+            
+            if options:
+                for option in options:
+                    subtype_value = option.get("value")
+                    subtype_list.append(subtype_value)
+                return subtype_list
+                
+            else:
+                raise HTTPException(status_code=404, detail="Not Found")
+        else:
+            raise HTTPException(status_code=response.status_code, detail=response.reason)
+    
+    def scrape_province(self, url: str) -> List[dict]:
+        response = requests.get(url, headers=self.headers)
         
-        for option in soup.select("option"):
-            type_value = option.get("value")
-            type_list.append(type_value)
-        
-        return type_list
+        if response.status_code == 200:
+            result = response.json()
+            return result
+            
+        else:
+            raise HTTPException(status_code=response.status_code, detail=response.reason)
