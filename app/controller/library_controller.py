@@ -39,7 +39,7 @@ async def get_libraries(
             **libraries
         }
 
-@router.get("/type", tags=["Type"])
+@router.get("/type", tags=["Type"], description="Getting type list")
 @cache(expire=900) # cache for 15 minute
 async def get_type():
     types = service.fetch_type_data()
@@ -50,7 +50,7 @@ async def get_type():
             'types': types
         }
     
-@router.get("/subtype/{nama_jenis}", tags=["Type"])
+@router.get("/subtype/{nama_jenis}", tags=["Type"], description="Getting subtype list")
 @cache(expire=900) # cache for 15 minute
 async def get_subtype(nama_jenis: str):
     subtypes = service.fetch_subtype_data(nama_jenis)
@@ -61,7 +61,7 @@ async def get_subtype(nama_jenis: str):
             'subtypes': subtypes
         }
 
-@router.get("/region/province", tags=["Region"])
+@router.get("/region/province", tags=["Region"], description="Get all province at Indonesia")
 @cache(expire=900) # cache for 15 minute
 async def get_province():
     provinces = service.fetch_province_data()
@@ -77,4 +77,58 @@ async def get_province():
             'status': 'error',
             'message': 'empty data',
             'data': provinces
+        }
+
+@router.get("/region/city/{id_province}", tags=["Region"], description="Get all cities in a province")
+@cache(expire=900)
+async def get_city(id_province: str):
+    cities = service.fetch_city_data(id_province)
+    
+    if cities:
+        return {
+            'status': 'success',
+            'data': cities,
+        }
+    
+    else:
+        return {
+            'status': 'error',
+            'message': 'empty data',
+            'data': cities
+        }
+
+@router.get("/region/district/{id_city}", tags=["Region"], description="Get all district/kecamatan in a city")
+@cache(expire=900)
+async def get_district(id_city: str):
+    district = service.fetch_district_data(id_city)
+    
+    if district:
+        return {
+            'status': 'success',
+            'data': district,
+        }
+    
+    else:
+        return {
+            'status': 'error',
+            'message': 'empty data',
+            'data': district
+        }
+
+@router.get("/region/subdistrict/{id_district}", tags=["Region"], description="Get all subdistrict/kelurahan in a district")
+@cache(expire=900)
+async def get_subdistrict(id_district: str):
+    subdistrict = service.fetch_subdistrict_data(id_district)
+    
+    if subdistrict:
+        return {
+            'status': 'success',
+            'data': subdistrict,
+        }
+    
+    else:
+        return {
+            'status': 'error',
+            'message': 'empty data',
+            'data': subdistrict
         }

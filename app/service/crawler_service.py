@@ -39,7 +39,7 @@ class LibraryCrawlerService:
         url = f"https://data.perpusnas.go.id/reference/list-dropdown/subjenis-perpustakaan/{type_encode}"
         
         # fetch all subtype from type
-        subtypes = self.scraper.scrape_subtype(url)
+        subtypes = self.scraper.scrape_type(url)
         return subtypes
 
     # PROVINCE
@@ -47,5 +47,29 @@ class LibraryCrawlerService:
         url = "https://data.perpusnas.go.id/public/kewilayahan/dati1/list-dropdown"
         
         # fetch all province at Indonesia
-        provinces = self.scraper.scrape_province(url)
+        provinces = self.scraper.scrape_region(url)
         return provinces
+
+    # CITY
+    def fetch_city_data(self, id_provinsi: str) -> List[dict]:
+        url = f"https://data.perpusnas.go.id/public/kewilayahan/dati2/list-dropdown/{id_provinsi}"
+        
+        # fetch all city in province
+        city = self.scraper.scrape_region(url)
+        return city
+    
+    # DISTRICT
+    def fetch_district_data(self, id_kabkota: str) -> List[dict]:
+        url = f"https://data.perpusnas.go.id/public/kewilayahan/dati3/list-dropdown/{id_kabkota}"
+        
+        # fetch all district/kecamatan
+        district = self.scraper.scrape_region(url)
+        return district
+
+    # SUBDISTRICT
+    def fetch_subdistrict_data(self, id_kecamatan: str) -> List[dict]:
+        url = f"https://data.perpusnas.go.id/public/kewilayahan/dati4/list-dropdown/{id_kecamatan}"
+        
+        # fetch all subdistrict/kelurahan
+        subdistrict = self.scraper.scrape_region(url)
+        return subdistrict

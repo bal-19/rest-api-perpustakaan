@@ -173,27 +173,7 @@ class WebScraper:
         else:
             raise HTTPException(status_code=response.status_code, detail=response.reason)
     
-    def scrape_subtype(self, url: str) -> List:
-        response = requests.get(url, headers=self.headers)
-        
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.text, "html.parser")
-            subtype_list = list()
-            
-            options = soup.select("option")
-            
-            if options:
-                for option in options:
-                    subtype_value = option.get("value")
-                    subtype_list.append(subtype_value)
-                return subtype_list
-                
-            else:
-                raise HTTPException(status_code=404, detail="Not Found")
-        else:
-            raise HTTPException(status_code=response.status_code, detail=response.reason)
-    
-    def scrape_province(self, url: str) -> List[dict]:
+    def scrape_region(self, url: str) -> List[dict]:
         response = requests.get(url, headers=self.headers)
         
         if response.status_code == 200:
