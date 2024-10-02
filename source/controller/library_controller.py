@@ -50,10 +50,10 @@ async def get_type():
             'types': types
         }
     
-@router.get("/list/subtype/{nama_jenis}", tags=["Type"], description="Getting subtype list")
+@router.get("/list/subtype/{type_name}", tags=["Type"], description="Getting subtype list")
 @cache(expire=900) # cache for 15 minute
-async def get_subtype(nama_jenis: str):
-    subtypes = service.fetch_subtype_data(nama_jenis)
+async def get_subtype(type_name: str):
+    subtypes = service.fetch_subtype_data(type_name)
     
     if subtypes:
         return {
@@ -61,9 +61,9 @@ async def get_subtype(nama_jenis: str):
             'subtypes': subtypes
         }
 
-@router.get("/list/region/province", tags=["Region"], description="Get all province at Indonesia")
+@router.get("/list/region/provinces", tags=["Region"], description="Get all provinces at Indonesia")
 @cache(expire=900) # cache for 15 minute
-async def get_province():
+async def get_provinces():
     provinces = service.fetch_province_data()
     
     if provinces:
@@ -79,28 +79,28 @@ async def get_province():
             'data': provinces
         }
 
-@router.get("/list/region/city/{id_province}", tags=["Region"], description="Get all cities in a province")
+@router.get("/list/region/regencies/{id_province}", tags=["Region"], description="Get all regencies in a province")
 @cache(expire=900)
-async def get_city(id_province: str):
-    cities = service.fetch_city_data(id_province)
+async def get_regencies(id_province: str):
+    regencies = service.fetch_city_data(id_province)
     
-    if cities:
+    if regencies:
         return {
             'status': 'success',
-            'data': cities,
+            'data': regencies,
         }
     
     else:
         return {
             'status': 'error',
             'message': 'empty data',
-            'data': cities
+            'data': regencies
         }
 
-@router.get("/list/region/district/{id_city}", tags=["Region"], description="Get all district/kecamatan in a city")
+@router.get("/list/region/districts/{id_regency}", tags=["Region"], description="Get all district in a regency")
 @cache(expire=900)
-async def get_district(id_city: str):
-    district = service.fetch_district_data(id_city)
+async def get_districts(id_regency: str):
+    district = service.fetch_district_data(id_regency)
     
     if district:
         return {
@@ -115,9 +115,9 @@ async def get_district(id_city: str):
             'data': district
         }
 
-@router.get("/list/region/subdistrict/{id_district}", tags=["Region"], description="Get all subdistrict/kelurahan in a district")
+@router.get("/list/region/villages/{id_district}", tags=["Region"], description="Get all villages in a district")
 @cache(expire=900)
-async def get_subdistrict(id_district: str):
+async def get_villages(id_district: str):
     subdistrict = service.fetch_subdistrict_data(id_district)
     
     if subdistrict:
