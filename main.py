@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
 
-from controller.library_controller import router as library_router
+from source.controller.library_controller import router as library_router
 
 app = FastAPI(title="Perpustakaan Service", description="Service untuk mendapatkan data perpustakaan yang ada di Indonesia")
 

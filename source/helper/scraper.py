@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from datetime import datetime
 from typing import List
 
-from model.perpustakaan import PerpustakaanMeta
+from ..model.perpustakaan import PerpustakaanMeta
 
 class WebScraper:
     def __init__(self) -> None:

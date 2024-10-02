@@ -3,7 +3,7 @@ import urllib.parse
 from fastapi import HTTPException
 from typing import List
 
-from helper.scraper import WebScraper
+from ..helper.scraper import WebScraper
 
 class LibraryCrawlerService:
     def __init__(self):

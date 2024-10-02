@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 from fastapi_cache.decorator import cache
 
-from service.crawler_service import LibraryCrawlerService
+from ..service.crawler_service import LibraryCrawlerService
 
 router = APIRouter()
 service = LibraryCrawlerService()

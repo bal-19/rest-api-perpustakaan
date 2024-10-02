@@ -14,4 +14,4 @@ RUN . .venv/bin/activate && pip install -r requirements.txt
 
 EXPOSE 7700
 
-CMD [ "/app/.venv/bin/python", "/app/source/main.py" ]
+CMD [ ".venv/bin/python", "main.py" ]
