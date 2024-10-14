@@ -81,7 +81,7 @@ class WebScraper:
             'kabkota_id': str(kwargs.get('kabkota_id', '')),
             'kecamatan_id': str(kwargs.get('kecamatan_id', '')),
             'kelurahan_id': str(kwargs.get('kelurahan_id', '')),
-            'subjenis': '',
+            'subjenis':str(kwargs.get('subjenis', '')),
             'draw': '0',
             'columns[0][data]': 'id',
             'columns[0][name]': 'id',

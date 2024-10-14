@@ -10,19 +10,21 @@ service = LibraryCrawlerService()
 @cache(expire=1800)  # Cache this endpoint for 30 minute
 async def get_libraries(
     type_name: str = Query('', description="Jenis perpustakaan (opsional)"),
+    subtype_name: str = Query('', description="Subjenis perpustakaan (opsional)"),
     province_id: str = Query('', description="ID provinsi (opsional)"),
-    city_id: str = Query('', description="ID kabupaten/kota (opsional)"),
-    district_id: str = Query('', description="ID kecamatan (opsional)"),
-    subdistrict_id: str = Query('', description="ID kelurahan (opsional)"),
+    regency_id: str = Query('', description="ID kabupaten/kota (opsional)"),
+    subdistrict_id: str = Query('', description="ID kecamatan (opsional)"),
+    village_id: str = Query('', description="ID kelurahan (opsional)"),
     length: int = Query(10, description="Jumlah data yang ingin diambil (opsional)")
 ):
     # Instantiate the crawler service and fetch libraries data
     libraries = service.fetch_libraries_data(
         jenis=type_name,
+        subjenis=subtype_name,
         provinsi_id=province_id,
-        kabkota_id=city_id,
-        kecamatan_id=district_id,
-        kelurahan_id=subdistrict_id,
+        kabkota_id=regency_id,
+        kecamatan_id=subdistrict_id,
+        kelurahan_id=village_id,
         length=length
     )
 
