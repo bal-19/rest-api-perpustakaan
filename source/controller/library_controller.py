@@ -15,6 +15,7 @@ async def get_libraries(
     regency_id: str = Query('', description="ID kabupaten/kota (opsional)"),
     subdistrict_id: str = Query('', description="ID kecamatan (opsional)"),
     village_id: str = Query('', description="ID kelurahan (opsional)"),
+    start: int = Query(0, description="Start length. ex: 0, 10, 20 (opsional)"),
     length: int = Query(10, description="Jumlah data yang ingin diambil (opsional)")
 ):
     # Instantiate the crawler service and fetch libraries data
@@ -25,6 +26,7 @@ async def get_libraries(
         kabkota_id=regency_id,
         kecamatan_id=subdistrict_id,
         kelurahan_id=village_id,
+        start=start,
         length=length
     )
 

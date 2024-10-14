@@ -125,7 +125,7 @@ class WebScraper:
             'columns[6][orderable]': 'false',
             'columns[6][search][value]': '',
             'columns[6][search][regex]': 'false',
-            'start': '0',
+            'start': str(kwargs.get('start', '0')),
             'length': str(kwargs.get('length', '10')),
             'search[value]': '',
             'search[regex]': 'false',

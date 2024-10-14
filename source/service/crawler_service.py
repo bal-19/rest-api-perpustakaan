@@ -10,7 +10,7 @@ class LibraryCrawlerService:
         self.scraper = WebScraper()
 
     # DATA PERPUSTAKAAN
-    def fetch_libraries_data(self, jenis: str, subjenis: str, provinsi_id: str, kabkota_id: str, kecamatan_id: str, kelurahan_id: str, length: int) -> List[dict]:
+    def fetch_libraries_data(self, jenis: str, subjenis: str, provinsi_id: str, kabkota_id: str, kecamatan_id: str, kelurahan_id: str, start: int, length: int) -> List[dict]:
         url = "https://data.perpusnas.go.id/public/direktori/list"
         
         # fetch data using scraper helper
@@ -22,6 +22,7 @@ class LibraryCrawlerService:
             kabkota_id=kabkota_id,
             kecamatan_id=kecamatan_id,
             kelurahan_id=kelurahan_id,
+            start=start,
             length=length
         )
         return libraries
