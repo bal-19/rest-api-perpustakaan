@@ -10,7 +10,7 @@ COPY . /app/
 
 RUN python -m venv .venv
 
-RUN . .venv/bin/activate && pip install -r requirements.txt
+RUN . .venv/bin/activate && pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 7700
 
