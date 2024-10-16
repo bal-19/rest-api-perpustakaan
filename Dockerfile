@@ -8,10 +8,10 @@ RUN ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime \
 
 COPY . /app/
 
-RUN python -m venv .venv
+RUN python -m venv venv
 
-RUN . .venv/bin/activate && pip install -r requirements.txt
+RUN . venv/bin/activate && pip install -r requirements.txt
 
 EXPOSE 7700
 
-CMD [ ".venv/bin/python", "main.py" ]
+CMD [ "venv/bin/python", "main.py" ]
