@@ -12,6 +12,6 @@ RUN python -m venv venv
 
 RUN venv/bin/pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 7700
+EXPOSE 1919
 
 CMD [ "venv/bin/python", "main.py" ]
