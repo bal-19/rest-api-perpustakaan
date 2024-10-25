@@ -7,20 +7,20 @@ This project aims to build a REST API service using FastAPI that automates the p
 clone project using git
 
 ```bash
-    git clone https://github.com/bal-19/rest-api-perpustakaan.git
-    cd rest-api-perpustakaan
+git clone https://github.com/bal-19/rest-api-perpustakaan.git
+cd rest-api-perpustakaan
 ```
 
 build docker image
 
 ```bash
-    docker build -t image-name:tag .
+sudo docker build -t image-name:tag .
 ```
 
 run docker image
 
 ```bash
-    docker run -d -p 1919:1919 image-name:tag
+sudo docker run -d -p 1919:1919 image-name:tag
 ```
 
 ## Installation
@@ -28,14 +28,14 @@ run docker image
 clone project using git
 
 ```bash
-    git clone https://github.com/bal-19/rest-api-perpustakaan.git
-    cd rest-api-perpustakaan
+git clone https://github.com/bal-19/rest-api-perpustakaan.git
+cd rest-api-perpustakaan
 ```
 
 create python virtual environment
 
 ```bash
-    python -m venv .venv
+python3 -m venv .venv
 ```
 
 activate virtual environment
@@ -43,23 +43,23 @@ activate virtual environment
 -   Windows
 
 ```bash
-    .venv\Scripts\Activate.ps1
+.venv\Scripts\Activate.ps1
 ```
 
 -   Linux
 
 ```bash
-    .venv\bin\activate
+source .venv/bin/activate
 ```
 
 install project requirements
 
 ```bash
-    pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 start project
 
 ```bash
-    python main.py
+python3 main.py
 ```
