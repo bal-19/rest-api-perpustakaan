@@ -4,30 +4,12 @@ from fastapi import HTTPException
 from typing import List
 
 from ..helper.scraper import WebScraper
+from ..helper.fetch import FetchDataPerpustakaan
 
 class LibraryCrawlerService:
     def __init__(self):
         self.scraper = WebScraper()
 
-    # DATA PERPUSTAKAAN
-    def fetch_libraries_data(self, jenis: str, subjenis: str, provinsi_id: str, kabkota_id: str, kecamatan_id: str, kelurahan_id: str, start: int, length: int) -> List[dict]:
-        url = "https://data.perpusnas.go.id/public/direktori/list"
-        
-        # fetch data using scraper helper
-        libraries = self.scraper.scrape_libraries(
-            url,
-            jenis=jenis,
-            subjenis=subjenis,
-            provinsi_id=provinsi_id,
-            kabkota_id=kabkota_id,
-            kecamatan_id=kecamatan_id,
-            kelurahan_id=kelurahan_id,
-            start=start,
-            length=length
-        )
-        return libraries
-        
-    # TYPE
     def fetch_type_data(self) -> List:
         url = "https://data.perpusnas.go.id/reference/list-dropdown/jenis-perpustakaan"
         
