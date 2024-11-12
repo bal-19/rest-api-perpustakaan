@@ -2,45 +2,68 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi_cache.decorator import cache
 
 from ..service.crawler_service import LibraryCrawlerService
+from ..helper.fetch import FetchDataPerpustakaan
 
 router = APIRouter()
 service = LibraryCrawlerService()
+fetcher = FetchDataPerpustakaan()
 
 @router.get("/data", tags=["Perpustakaan"])
 @cache(expire=1800)  # Cache this endpoint for 30 minute
-async def get_libraries(
-    type_name: str = Query('', description="Jenis perpustakaan (opsional)"),
-    subtype_name: str = Query('', description="Subjenis perpustakaan (opsional)"),
-    province_id: str = Query('', description="ID provinsi (opsional)"),
-    regency_id: str = Query('', description="ID kabupaten/kota (opsional)"),
-    subdistrict_id: str = Query('', description="ID kecamatan (opsional)"),
-    village_id: str = Query('', description="ID kelurahan (opsional)"),
-    start: int = Query(0, description="Start length. ex: 0, 10, 20 (opsional)"),
-    length: int = Query(10, description="Jumlah data yang ingin diambil (opsional)")
-):
-    # Instantiate the crawler service and fetch libraries data
-    libraries = service.fetch_libraries_data(
-        jenis=type_name,
-        subjenis=subtype_name,
-        provinsi_id=province_id,
-        kabkota_id=regency_id,
-        kecamatan_id=subdistrict_id,
-        kelurahan_id=village_id,
-        start=start,
-        length=length
-    )
+async def get_libraries():
+    libraries = fetcher.get_all()
 
-    if libraries.get("data"):
+    if libraries:
         return {
             'status': 'success',
-            **libraries
+            'data': libraries
         }
         
     else:
         return {
-            'status': 'error',
+            'status': 'DATA NOT FOUND',
             'message': 'empty data',
-            **libraries
+            'data': libraries
+        }
+
+@router.get("/data/search", tags=["Perpustakaan"])
+@cache(expire=1800)  # Cache this endpoint for 30 minute
+async def get_libraries_by_search(query: str):
+    libraries = fetcher.get_by_search(query)
+
+    if libraries:
+        return {
+            'status': 'success',
+            'data': libraries
+        }
+        
+    else:
+        return {
+            'status': 'DATA NOT FOUND',
+            'message': 'empty data',
+            'data': libraries
+        }
+
+@router.get("/data/filter", tags=["Perpustakaan"])
+@cache(expire=1800)  # Cache this endpoint for 30 minute
+async def get_libraries_by_filter(key: str, value: str):
+    """
+    Key for column name <br>
+    Value for value at column
+    """
+    libraries = fetcher.get_by_filter(key, value)
+
+    if libraries:
+        return {
+            'status': 'success',
+            'data': libraries
+        }
+        
+    else:
+        return {
+            'status': 'DATA NOT FOUND',
+            'message': 'empty data',
+            'data': libraries
         }
 
 @router.get("/list/type", tags=["Type"], description="Getting type list")
