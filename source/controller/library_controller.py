@@ -10,59 +10,54 @@ fetcher = FetchDataPerpustakaan()
 
 @router.get("/data", tags=["Perpustakaan"])
 @cache(expire=1800)  # Cache this endpoint for 30 minute
-async def get_libraries():
-    libraries = fetcher.get_all()
+async def get_libraries(
+    limit: int = Query(10, ge=5, le=50, description="Maximum amount of data to be displayed"),
+    page: int = Query(1, ge=1, description="The data page you want to retrieve")
+):
+    
+    libraries = fetcher.get_all(page=page, limit=limit)
 
     if libraries:
         return {
             'status': 'success',
-            'data': libraries
-        }
-        
-    else:
-        return {
-            'status': 'DATA NOT FOUND',
-            'message': 'empty data',
             'data': libraries
         }
 
 @router.get("/data/search", tags=["Perpustakaan"])
 @cache(expire=1800)  # Cache this endpoint for 30 minute
-async def get_libraries_by_search(query: str):
-    libraries = fetcher.get_by_search(query)
+async def get_libraries_by_search(
+    query: str,
+    limit: int = Query(10, ge=5, le=50, description="Maximum amount of data to be displayed"),
+    page: int = Query(1, ge=1, description="The data page you want to retrieve")
+):
+    
+    libraries = fetcher.get_by_search(query, page=page, limit=limit)
 
     if libraries:
         return {
             'status': 'success',
-            'data': libraries
-        }
-        
-    else:
-        return {
-            'status': 'DATA NOT FOUND',
-            'message': 'empty data',
             'data': libraries
         }
 
 @router.get("/data/filter", tags=["Perpustakaan"])
 @cache(expire=1800)  # Cache this endpoint for 30 minute
-async def get_libraries_by_filter(key: str, value: str):
+async def get_libraries_by_filter(
+    key: str,
+    value: str,
+    limit: int = Query(10, ge=5, le=50, description="Maximum amount of data to be displayed"),
+    page: int = Query(1, ge=1, description="The data page you want to retrieve")
+):
     """
     Key for column name <br>
     Value for value at column
     """
-    libraries = fetcher.get_by_filter(key, value)
+    
+    
+    libraries = fetcher.get_by_filter(key, value, page=page, limit=limit)
 
     if libraries:
         return {
             'status': 'success',
-            'data': libraries
-        }
-        
-    else:
-        return {
-            'status': 'DATA NOT FOUND',
-            'message': 'empty data',
             'data': libraries
         }
 
