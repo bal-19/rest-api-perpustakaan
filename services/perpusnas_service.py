@@ -52,7 +52,7 @@ class PerpusnasService:
     
     
     @staticmethod
-    async def get_all(page: int, limit: int) -> dict:
+    async def get_all(page: int, limit: int, **kwargs) -> dict:
         """
         Mengambil semua data dari MongoDB
 
@@ -63,9 +63,19 @@ class PerpusnasService:
         Returns:
             dict: Deskripsi data dan list data perpustakaan
         """
+        filter_mongo = {}
+        fields = ["jenis", "subjenis", "provinsi", "kabkota", "kecamatan", "kelurahan"]
+        for field in fields:
+            value = kwargs.get(field)
+            if value:
+                filter_mongo[field] = {
+                    "$regex": f"^{value}$", 
+                    "$options": "i"
+                }
+        
         offset = (page - 1) * limit
         
-        cursor = db.client[settings.DATABASE_NAME]["data"].find().skip(offset).limit(limit)
+        cursor = db.client[settings.DATABASE_NAME]["data"].find(filter_mongo).skip(offset).limit(limit)
         result = await cursor.to_list()
         
         total_data = await db.client[settings.DATABASE_NAME]["data"].count_documents({})
@@ -96,7 +106,8 @@ class PerpusnasService:
         Returns:
             dict: Deskripsi data dan list data perpustakaan
         """
-        filter_mongo = {"nama": {"$regex": value, "$options": "i"}}
+        filter_mongo = {"$text": { "$search": value }}
+
         offset = (page - 1) * limit
         
         cursor = db.client[settings.DATABASE_NAME]["data"].find(filter_mongo).skip(offset).limit(limit)
@@ -117,44 +128,3 @@ class PerpusnasService:
             "total_pages": (total_data + limit - 1) // limit,
             "result": data
         }
-    
-    @staticmethod
-    async def get_by_filter(key: str, value: str, page: int, limit: int) -> dict:
-        """
-        Mengambil semua data dari MongoDB berdasarkan key yang ingin difilter
-
-        Args:
-            key (str): key dari data. eg: jenis, subjenis, provinsi
-            value (str): value dari key. eg: UMUM, SMK, Jawa Timur
-            page (int): Halaman yang ingin ditampilkan
-            limit (int): Batas data yang ingin ditampilkan
-
-        Returns:
-            dict: Deskripsi data dan list data perpustakaan
-        """
-        filter_mongo = {key: value}
-        offset = (page - 1) * limit
-        
-        cursor = db.client[settings.DATABASE_NAME]["data"].find(filter_mongo).skip(offset).limit(limit)
-        result = await cursor.to_list()
-        
-        total_data = await db.client[settings.DATABASE_NAME]["data"].count_documents(filter_mongo)
-        
-        data: List[PerpusnasModel] = list()
-        for row in result:
-            row.pop("_id")
-            data.append(await validate_data(row))
-        
-        return {
-            "column": {
-                "key": key,
-                "value": value
-            },
-            "page": page,
-            "limit": limit,
-            "total_data": total_data,
-            "total_pages": (total_data + limit - 1) // limit,
-            "result": data
-        }
-    
-    
