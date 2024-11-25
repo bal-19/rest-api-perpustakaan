@@ -62,7 +62,7 @@ async def get_libraries_by_filter(
         }
 
 @router.get("/list/type", tags=["Type"], description="Getting type list")
-@cache(expire=900) # cache for 15 minute
+@cache(expire=3600) # cache for 1 hour
 async def get_type():
     types = service.fetch_type_data()
     
@@ -73,7 +73,7 @@ async def get_type():
         }
     
 @router.get("/list/subtype/{type_name}", tags=["Type"], description="Getting subtype list")
-@cache(expire=900) # cache for 15 minute
+@cache(expire=3600) # cache for 1 hour
 async def get_subtype(type_name: str):
     subtypes = service.fetch_subtype_data(type_name)
     
@@ -84,7 +84,7 @@ async def get_subtype(type_name: str):
         }
 
 @router.get("/list/region/provinces", tags=["Region"], description="Get all provinces at Indonesia")
-@cache(expire=900) # cache for 15 minute
+@cache(expire=3600) # cache for 1 hour
 async def get_provinces():
     provinces = service.fetch_province_data()
     
@@ -102,7 +102,7 @@ async def get_provinces():
         }
 
 @router.get("/list/region/regencies/{id_province}", tags=["Region"], description="Get all regencies in a province")
-@cache(expire=900)
+@cache(expire=3600)
 async def get_regencies(id_province: str):
     regencies = service.fetch_city_data(id_province)
     
@@ -120,7 +120,7 @@ async def get_regencies(id_province: str):
         }
 
 @router.get("/list/region/districts/{id_regency}", tags=["Region"], description="Get all district in a regency")
-@cache(expire=900)
+@cache(expire=3600)
 async def get_districts(id_regency: str):
     district = service.fetch_district_data(id_regency)
     
@@ -138,7 +138,7 @@ async def get_districts(id_regency: str):
         }
 
 @router.get("/list/region/villages/{id_district}", tags=["Region"], description="Get all villages in a district")
-@cache(expire=900)
+@cache(expire=3600)
 async def get_villages(id_district: str):
     subdistrict = service.fetch_subdistrict_data(id_district)
     
