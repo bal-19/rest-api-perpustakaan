@@ -14,7 +14,6 @@ cd rest-api-perpustakaan
 build docker image
 
 ```bash
-cd app
 sudo docker build -t image-name:tag .
 ```
 
@@ -56,12 +55,11 @@ source .venv/bin/activate
 install project requirements
 
 ```bash
-pip install -r app/requirements.txt
+pip install -r requirements.txt
 ```
 
 start project
 
 ```bash
-cd app
 python3 main.py
 ```
