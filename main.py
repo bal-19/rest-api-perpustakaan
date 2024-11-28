@@ -7,8 +7,9 @@ from fastapi import FastAPI
 
 from api.v1.endpoints import perpusnas
 from core.database import db
+from core.config import settings
 
-app = FastAPI(title="Unofficial REST API Perpusnas", version="1.0.0")
+app = FastAPI(title=settings.APP_NAME, version="1.0.0")
 
 # Event startup dan shutdown for connection database
 @app.on_event("startup")
@@ -27,7 +28,7 @@ app.include_router(perpusnas.router, prefix="/api/v1/perpusnas")
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the Perpustakaan Crawler API!"}
+    return {"message": "hhuh!?"}
 
 if __name__ == "__main__":
     argp = argparse.ArgumentParser()
