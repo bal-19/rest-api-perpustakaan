@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Settings(BaseSettings):
-    APP_NAME: str = "FastAPI Perpusnas"
+    APP_NAME: str = "Unofficial Perpusnas Rest API"
     MONGO_URL: str = os.getenv("MONGO_URL")
     DATABASE_NAME: str = os.getenv("DATABASE_NAME")
 
