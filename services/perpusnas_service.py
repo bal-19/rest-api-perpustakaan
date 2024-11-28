@@ -78,7 +78,7 @@ class PerpusnasService:
         cursor = db.client[settings.DATABASE_NAME]["data"].find(filter_mongo).skip(offset).limit(limit)
         result = await cursor.to_list()
         
-        total_data = await db.client[settings.DATABASE_NAME]["data"].count_documents({})
+        total_data = await db.client[settings.DATABASE_NAME]["data"].count_documents(filter_mongo)
         
         data: List[PerpusnasModel] = list()
         for row in result:
@@ -106,7 +106,7 @@ class PerpusnasService:
         Returns:
             dict: Deskripsi data dan list data perpustakaan
         """
-        filter_mongo = {"$text": { "$search": value }}
+        filter_mongo = { "$text": { "$search": value } }
 
         offset = (page - 1) * limit
         

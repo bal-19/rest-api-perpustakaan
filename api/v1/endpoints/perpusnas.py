@@ -9,11 +9,11 @@ router = APIRouter()
 
 # Library
 @router.get("/data", response_model=PerpusnasResponse, tags=["Perpustakaan"], description="Mengambil semua data perpustakaan tanpa filter")
-@cache(expire=1800)
+@cache(expire=120)
 async def get_libraries(
     limit: int = Query(10, ge=5, le=50, description="Maximum amount of data to be displayed"),
     page: int = Query(1, ge=1, description="The data page you want to retrieve"),
-    type: str = Query(None, description="The type of library you want to display"),
+    tipe: str = Query(None, description="The type of library you want to display"),
     subtype: str = Query(None, description="The library subtype to display"),
     province: str = Query(None, description="Province of the library you wish to display"),
     city: str = Query(None, description="Regency/City library you wish to display"),
@@ -22,7 +22,7 @@ async def get_libraries(
     service: PerpusnasService = Depends()
 ):
     filter_kwargs = {
-        "jenis": type,
+        "jenis": tipe,
         "subjenis": subtype,
         "provinsi": province,
         "kabkota": city,
@@ -32,15 +32,15 @@ async def get_libraries(
     
     return await service.get_all(page=page, limit=limit, **filter_kwargs)
 
-@router.get("/data/search", response_model=PerpusnasResponse, tags=["Perpustakaan"], description="Mengambil semua data perpustakaan berdasarkan nama perpustakaan yang dicari")
-@cache(expire=1800)
-async def get_libraries_by_search(
-    query: str,
-    limit: int = Query(10, ge=5, le=50, description="Maximum amount of data to be displayed"),
-    page: int = Query(1, ge=1, description="The data page you want to retrieve"),
-    service: PerpusnasService = Depends()
-):
-    return await service.get_by_search(query, page=page, limit=limit)
+# @router.get("/data/search", response_model=PerpusnasResponse, tags=["Perpustakaan"], description="Mengambil semua data perpustakaan berdasarkan nama perpustakaan yang dicari")
+# @cache(expire=120)
+# async def get_libraries_by_search(
+#     query: str,
+#     limit: int = Query(10, ge=5, le=50, description="Maximum amount of data to be displayed"),
+#     page: int = Query(1, ge=1, description="The data page you want to retrieve"),
+#     service: PerpusnasService = Depends()
+# ):
+#     return await service.get_by_search(query, page=page, limit=limit)
 
 
 # Type & Subtype
