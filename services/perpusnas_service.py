@@ -75,10 +75,10 @@ class PerpusnasService:
         
         offset = (page - 1) * limit
         
-        cursor = db.client[settings.DATABASE_NAME]["data"].find(filter_mongo).skip(offset).limit(limit)
+        cursor = db.client[settings.DATABASE_NAME]["data_perpustakaan"].find(filter_mongo).skip(offset).limit(limit)
         result = await cursor.to_list()
         
-        total_data = await db.client[settings.DATABASE_NAME]["data"].count_documents(filter_mongo)
+        total_data = await db.client[settings.DATABASE_NAME]["data_perpustakaan"].count_documents(filter_mongo)
         
         data: List[PerpusnasModel] = list()
         for row in result:
@@ -110,10 +110,10 @@ class PerpusnasService:
 
         offset = (page - 1) * limit
         
-        cursor = db.client[settings.DATABASE_NAME]["data"].find(filter_mongo).skip(offset).limit(limit)
+        cursor = db.client[settings.DATABASE_NAME]["data_perpustakaan"].find(filter_mongo).skip(offset).limit(limit)
         result = await cursor.to_list()
         
-        total_data = await db.client[settings.DATABASE_NAME]["data"].count_documents(filter_mongo)
+        total_data = await db.client[settings.DATABASE_NAME]["data_perpustakaan"].count_documents(filter_mongo)
         
         data: List[PerpusnasModel] = list()
         for row in result:
