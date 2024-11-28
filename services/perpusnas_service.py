@@ -36,18 +36,27 @@ class PerpusnasService:
         url = f"{self.source}/public/kewilayahan/dati2/list-dropdown/{id_provinsi}"
         
         city = self.scraper.scrape_region(url)
+        for c in city:
+            c["province_id"]  = c.pop("dati1id")
+        
         return city
     
     def get_district(self, id_kabkota: str) -> List[dict]:
         url = f"{self.source}/public/kewilayahan/dati3/list-dropdown/{id_kabkota}"
         
         district = self.scraper.scrape_region(url)
+        for d in district:
+            d["city_id"]  = d.pop("dati2id")
+            
         return district
 
     def get_subdistrict(self, id_kecamatan: str) -> List[dict]:
         url = f"{self.source}/public/kewilayahan/dati4/list-dropdown/{id_kecamatan}"
         
         subdistrict = self.scraper.scrape_region(url)
+        for s in subdistrict:
+            s["district_id"]  = s.pop("dati3id")
+        
         return subdistrict
     
     
