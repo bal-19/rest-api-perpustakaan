@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, Query
 from fastapi_cache.decorator import cache
+from typing import List
 
-from schemas.perpusnas import PerpusnasResponse
+from schemas.perpusnas import PerpusnasResponse, ProvinceResponse, CityResponse, DistrictResponse, VillageResponse
 from services.perpusnas_service import PerpusnasService
 
 
@@ -44,14 +45,14 @@ async def get_libraries(
 
 
 # Type & Subtype
-@router.get("/list/type", response_model=list, tags=["Type"], description="Mengambil jenis jenis perpustakaan yang tersedia")
+@router.get("/list/type", response_model=list[str], tags=["Type"], description="Mengambil jenis jenis perpustakaan yang tersedia")
 @cache(expire=3600)
 async def get_type(
     service: PerpusnasService = Depends()
 ):
     return service.get_type()
 
-@router.get("/list/subtype/{type_name}", response_model=list, tags=["Type"], description="Mengambil subjenis perpustakaan yang tersedia")
+@router.get("/list/subtype/{type_name}", response_model=list[str], tags=["Type"], description="Mengambil subjenis perpustakaan yang tersedia")
 @cache(expire=3600)
 async def get_subtype(
     type_name: str,
@@ -61,14 +62,14 @@ async def get_subtype(
 
 
 # Locations
-@router.get("/list/region/provinces", tags=["Region"], description="Mengambil semua Provinsi yang ada di Indonesia")
+@router.get("/list/region/provinces", response_model=List[ProvinceResponse], tags=["Region"], description="Mengambil semua Provinsi yang ada di Indonesia")
 @cache(expire=3600) 
 async def get_provinces(
     service: PerpusnasService = Depends()
 ):
     return service.get_province()
 
-@router.get("/list/region/regencies/{id_province}", tags=["Region"], description="Mengambil semua Kab/Kota yang ada di Indonesia")
+@router.get("/list/region/regencies/{id_province}", response_model=List[CityResponse], tags=["Region"], description="Mengambil semua Kab/Kota yang ada di Indonesia")
 @cache(expire=3600)
 async def get_regencies(
     id_province: str,
@@ -76,7 +77,7 @@ async def get_regencies(
 ):
     return service.get_city(id_province)
 
-@router.get("/list/region/districts/{id_regency}", tags=["Region"], description="Mengambil semua Kecamatan yang ada di Indonesia")
+@router.get("/list/region/districts/{id_regency}", response_model=List[DistrictResponse], tags=["Region"], description="Mengambil semua Kecamatan yang ada di Indonesia")
 @cache(expire=3600)
 async def get_districts(
     id_regency: str,
@@ -84,7 +85,7 @@ async def get_districts(
 ):
     return service.get_district(id_regency)
 
-@router.get("/list/region/villages/{id_district}", tags=["Region"], description="Mengambil semua Kelurahan/Desa yang ada di Indonesia")
+@router.get("/list/region/villages/{id_district}", response_model=List[VillageResponse], tags=["Region"], description="Mengambil semua Kelurahan/Desa yang ada di Indonesia")
 @cache(expire=3600)
 async def get_villages(
     id_district: str,
