@@ -6,7 +6,7 @@ class PerpusnasModel(BaseModel):
     npp: Optional[str]
     npp_lama: Optional[str]
     nama: str
-    lembaga: str
+    lembaga: Optional[str]
     jenis: str
     subjenis: Optional[str]
     status: Optional[str]
@@ -15,7 +15,7 @@ class PerpusnasModel(BaseModel):
     telepon: Optional[str]
     email: Optional[str]
     website: Optional[str]
-    kode_pos: str
+    kode_pos: Optional[str]
     kelurahan: str
     kecamatan: str
     kabkota: str
