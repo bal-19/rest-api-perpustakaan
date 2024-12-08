@@ -4,7 +4,6 @@ from typing import Optional, List
 from models.perpusnas import PerpusnasModel
 
 class PerpusnasResponse(BaseModel):
-    query: Optional[str]
     page: int
     limit: int
     total_data: int
