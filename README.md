@@ -2,6 +2,10 @@
 
 This project aims to build a REST API service using FastAPI that automates the process of data retrieval (scraping) from the national library website. This API allows users to send HTTP requests and receive responses in the form of library data scraped in real-time from web pages. This scraping process is done using libraries such as requests to collect data from dynamic sites.
 
+## Requirements
+
+This project need [crawling engine](https://github.com/bal-19/crawler-perpusnas)
+
 ## Using Docker
 
 clone project using git
