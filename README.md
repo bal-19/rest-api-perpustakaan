@@ -5,6 +5,7 @@ This project aims to build a REST API service using FastAPI that automates the p
 ## Requirements
 
 This project need [Crawling Engine](https://github.com/bal-19/crawler-perpusnas)
+**Python Version:** [3.10.14](https://www.python.org/downloads/release/python-31014/)
 
 ## Using Docker
 
